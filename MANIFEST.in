@@ -1,0 +1,2 @@
+recursive-include mc_widget_periodictable/static *.*
+include mc-widget-periodictable.json
