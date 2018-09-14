@@ -1,6 +1,29 @@
 var widgets = require('@jupyter-widgets/base');
 var _ = require('lodash');
 
+var elementTable = [
+    ["H", "", "", "", "", "", "", "", "","", "", "", "", "", "", "", "", "He"],
+    ["Li", "Be", "", "", "", "", "", "", "","", "", "", "B", "C", "N", "O", "F", "Ne"],
+    ["Na", "Mg", "", "", "", "", "", "", "","", "", "", "Al", "Si", "P", "S", "Cl", "Ar"],
+    ["K", "Ca", "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co","Ni", "Cu", "Zn", "Ga", "Ge", "As", "Se", "Br", "Kr"],
+    ["Rb", "Sr", "Y", "Zr", "Nb", "Mo", "Tc", "Ru", "Rh","Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I", "Xe"],
+    ["Cs", "Ba", "*", "Hf", "Ta", "W", "Re", "Os", "Ir","Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn"],
+    ["Fr", "Ra", "*", "Rf", "Db", "Sg", "Bh", "Hs", "Mt","Ds", "Rg", "Cn", "Nh", "Fi", "Mc", "Lv", "Ts", "Og"],
+    ["", "", "", "", "", "", "", "", "","", "", "", "", "", "", "", "", ""],
+    ["", "", "*", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu","Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb", "Lu"],
+    ["", "", "*", "Ac", "Th", "Pa", "U", "Np", "Pu", "Am","Cm", "Bk", "Cf", "Es", "Fm", "Md", "No", "Lr"]    
+];
+
+var elementList = [];
+for (let elementRow of elementTable) {
+    for (let elementName of elementRow) {
+        if ( (elementName === "") || (elementName == "*" ) ) {
+        }
+        else {
+            elementList.push(elementName);
+        }
+    }
+}
 
 // Custom Model. Custom widgets models must at least provide default values
 // for model attributes, including
@@ -31,13 +54,20 @@ var MCPTableModel = widgets.DOMWidgetModel.extend({
 
 // Custom View. Renders the widget model.
 var MCPTableView = widgets.DOMWidgetView.extend({
-    // Todo: put around a div with type 'table' and one with type 'table row'
-    //my_template: _.template('<span class="periodic-table-entry"><strong><%= selected_element %></strong> (<%= age %>)</span>'),
-    cell_template: _.template('<span class="periodic-table-entry noselect element-<%= elementName %><% if (selectedElements.includes(elementName)) { print(" elementOn"); } %>"><%= elementName %></span>'),
+    // TODO: move template to external file to make it more readable, see
+    // http://codebeerstartups.com/2012/12/how-to-improve-templates-in-backbone-js-learning-backbone-js/
+    tableTemplate: _.template(
+        '<% for (let elementRow of elementTable) { print("<div class=\'periodic-table-row\'>"); for (let elementName of elementRow) { if ( (elementName === "") || (elementName == "*" ) ) { %>' +
+        '  <span class="periodic-table-empty noselect"><%= elementName %></span>' +
+        '<% } else { %>' +
+        '  <span class="<% if (disabledElements.includes(elementName)) { print(" periodic-table-disabled"); } else { print(" periodic-table-entry"); }%> noselect element-<%= elementName %><% if (selectedElements.includes(elementName) && (! disabledElements.includes(elementName)) ) { print(" elementOn"); } %>"><%= elementName %></span>' +
+        '<% } }; print("</div>"); } %>'
+    ),
 
     render: function() {
         this.selected_elements_changed();
         this.model.on('change:selected_elements', this.selected_elements_changed, this);
+        this.model.on('change:disabled_elements', this.disabled_elements_changed, this);
     },
 
     events: {
@@ -47,6 +77,7 @@ var MCPTableView = widgets.DOMWidgetView.extend({
     toggleElement: function(event) {
         var elementName = undefined;
         var isOn = false;
+        var isDisabled = false;
         for (let classElem of event.target.classList) {
             if (classElem.startsWith('element-')) {
                 elementName = classElem.slice("element-".length);
@@ -54,7 +85,11 @@ var MCPTableView = widgets.DOMWidgetView.extend({
             if (classElem == "elementOn") {
                 isOn = true;
             }
+            if (classElem == "periodic-table-disabled") {
+                isDisabled = true;
+            }
         }
+        if (isDisabled) return;
 
         if (typeof elementName !== 'undefined') {
             var currentList = this.model.get('selected_elements');
@@ -80,22 +115,47 @@ var MCPTableView = widgets.DOMWidgetView.extend({
         }
     },
 
+    disabled_elements_changed: function() {
+        // Make always a copy
+        var selectedElements = this.model.get('selected_elements').slice();
+        var disabledElements = this.model.get('disabled_elements');
+
+        // Remove unknown elements
+        for (let elementName of selectedElements) {
+            if (!elementList.includes(elementName)) {
+                var index = selectedElements.indexOf(elementName);
+                if (index > -1) {
+                    selectedElements.splice(index, 1);
+                }
+            }
+        }
+        // Remove disabled elements
+        for (let elementName of disabledElements) {
+            if (selectedElements.includes(elementName)) {
+                var index = selectedElements.indexOf(elementName);
+                if (index > -1) {
+                    selectedElements.splice(index, 1);
+                }
+            }
+        }
+        // Update
+        this.model.set('selected_elements', selectedElements);
+        this.touch();
+
+        this.selected_elements_changed();
+    },
+
     selected_elements_changed: function() {
-        console.log("Here!");
         var selectedElements = this.model.get('selected_elements');
-        console.log(selectedElements);
-        // NEXT LINE: DEBUG
-        window.ggg = this.model;
+        var disabledElements = this.model.get('disabled_elements');
+        
         // TODO: There is for sure a way to do to loops in the template, fix this
         this.el.innerHTML = '<div class="periodic-table-body">' +
-            '<div class="periodic-table-row">' +
-                this.cell_template({elementName: 'H', selectedElements: selectedElements})+
-                this.cell_template({elementName: 'He', selectedElements: selectedElements})+
-            '</div>' +
-            '<div class="periodic-table-row">' +
-                this.cell_template({elementName: 'Li', selectedElements: selectedElements})+
-                this.cell_template({elementName: 'Ne', selectedElements: selectedElements})+
-            '</div>' +
+            this.tableTemplate({
+                elementTable: elementTable, 
+                selectedElements: selectedElements,
+                disabledElements: disabledElements
+            }) +
             '</div>';
     }
 });
