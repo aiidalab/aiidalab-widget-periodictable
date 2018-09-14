@@ -116,44 +116,46 @@ var MCPTableView = widgets.DOMWidgetView.extend({
     },
 
     disabled_elements_changed: function() {
-        // Make always a copy
-        var selectedElements = this.model.get('selected_elements').slice();
-        var disabledElements = this.model.get('disabled_elements');
-
-        // Remove unknown elements
-        for (let elementName of selectedElements) {
-            if (!elementList.includes(elementName)) {
-                var index = selectedElements.indexOf(elementName);
-                if (index > -1) {
-                    selectedElements.splice(index, 1);
-                }
-            }
-        }
-        // Remove disabled elements
-        for (let elementName of disabledElements) {
-            if (selectedElements.includes(elementName)) {
-                var index = selectedElements.indexOf(elementName);
-                if (index > -1) {
-                    selectedElements.splice(index, 1);
-                }
-            }
-        }
-        // Update
-        this.model.set('selected_elements', selectedElements);
-        this.touch();
-
         this.selected_elements_changed();
     },
 
     selected_elements_changed: function() {
         var selectedElements = this.model.get('selected_elements');
         var disabledElements = this.model.get('disabled_elements');
+        var newSelectedElements = selectedElements.slice();
+
+        var changed=false;
+        // Remove disabled elements
+        for (let elementName of disabledElements) {
+            if (newSelectedElements.includes(elementName)) {
+                var index = newSelectedElements.indexOf(elementName);
+                if (index > -1) {
+                    newSelectedElements.splice(index, 1);
+                    changed = true;
+                }
+            }
+        }
+        // Remove unknown elements
+        for (let elementName of newSelectedElements) {
+            if (!elementList.includes(elementName)) {
+                var index = newSelectedElements.indexOf(elementName);
+                if (index > -1) {
+                    newSelectedElements.splice(index, 1);
+                    changed = true;
+                }
+            }
+        }
+        // call the update only if I actually removed something
+        if (changed) {
+            // Make a copy before setting
+            this.model.set('selected_elements', newSelectedElements);
+            this.touch();
+        }
         
-        // TODO: There is for sure a way to do to loops in the template, fix this
         this.el.innerHTML = '<div class="periodic-table-body">' +
             this.tableTemplate({
                 elementTable: elementTable, 
-                selectedElements: selectedElements,
+                selectedElements: newSelectedElements,
                 disabledElements: disabledElements
             }) +
             '</div>';
