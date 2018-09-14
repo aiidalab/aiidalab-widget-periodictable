@@ -33,7 +33,8 @@ var MCPTableModel = widgets.DOMWidgetModel.extend({
 
 // Custom View. Renders the widget model.
 var MCPTableView = widgets.DOMWidgetView.extend({
-    my_template: _.template("<strong><%= selected_element %></strong> (<%= age %>)"),
+    // Todo: put around a div with type 'table' and one with type 'table row'
+    my_template: _.template('<span class="periodic-table-entry"><strong><%= selected_element %></strong> (<%= age %>)</span>'),
 
     render: function() {
         this.selected_element_changed();
