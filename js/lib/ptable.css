@@ -8,3 +8,39 @@
     vertical-align: middle; 
     background-color: #ffaaaa;
 }
+
+.periodic-table-row {
+    display: table-row; 
+}
+
+.periodic-table-body {
+    display: table; border-spacing: 6px;
+}
+
+.periodic-table-entry:hover {
+    background-color: #cc7777;
+}
+
+.periodic-table-entry.elementOn {
+    background-color: #aaaaff;
+    border: 1px solid #7777cc; 
+    border-radius: 4px; 
+}
+
+
+.periodic-table-entry.elementOn:hover {
+    background-color: #7777cc;
+    border: 1px solid #7777cc; 
+    border-radius: 4px; 
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome and Opera */
+  }
+  

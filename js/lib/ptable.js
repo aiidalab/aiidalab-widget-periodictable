@@ -25,8 +25,6 @@ var MCPTableModel = widgets.DOMWidgetModel.extend({
         _view_module : 'mc-widget-periodictable',
         _model_module_version : '0.1.0',
         _view_module_version : '0.1.0',
-        age: 23,
-        selected_element: 'test2'
     })
 });
 
@@ -34,21 +32,71 @@ var MCPTableModel = widgets.DOMWidgetModel.extend({
 // Custom View. Renders the widget model.
 var MCPTableView = widgets.DOMWidgetView.extend({
     // Todo: put around a div with type 'table' and one with type 'table row'
-    my_template: _.template('<span class="periodic-table-entry"><strong><%= selected_element %></strong> (<%= age %>)</span>'),
+    //my_template: _.template('<span class="periodic-table-entry"><strong><%= selected_element %></strong> (<%= age %>)</span>'),
+    cell_template: _.template('<span class="periodic-table-entry noselect element-<%= elementName %><% if (selectedElements.includes(elementName)) { print(" elementOn"); } %>"><%= elementName %></span>'),
 
     render: function() {
-        this.selected_element_changed();
-        this.model.on('change:selected_element', this.selected_element_changed, this);
+        this.selected_elements_changed();
+        this.model.on('change:selected_elements', this.selected_elements_changed, this);
     },
 
-    selected_element_changed: function() {
-        console.log("Here!")
+    events: {
+        "click .periodic-table-entry": "toggleElement"
+    },
+
+    toggleElement: function(event) {
+        var elementName = undefined;
+        var isOn = false;
+        for (let classElem of event.target.classList) {
+            if (classElem.startsWith('element-')) {
+                elementName = classElem.slice("element-".length);
+            }
+            if (classElem == "elementOn") {
+                isOn = true;
+            }
+        }
+
+        if (typeof elementName !== 'undefined') {
+            var currentList = this.model.get('selected_elements');
+            // NOTE! it is essential to duplicate the list,
+            // otherwise the value will not be updated.
+            var newList = currentList.slice();
+
+            // Should we rather just change the 'selected_elements'
+            // value and call the render function again?
+            if (isOn) {
+                var index = newList.indexOf(elementName);
+                if (index > -1) {
+                    newList.splice(index, 1);
+                }
+                event.target.classList.remove('elementOn');
+            } else {
+                newList.push(elementName);
+                event.target.classList.add('elementOn');
+            }
+
+            this.model.set('selected_elements', newList);
+            this.touch();
+        }
+    },
+
+    selected_elements_changed: function() {
+        console.log("Here!");
+        var selectedElements = this.model.get('selected_elements');
+        console.log(selectedElements);
+        // NEXT LINE: DEBUG
         window.ggg = this.model;
-        this.el.innerHTML = "AA: " + this.my_template(this.model.attributes);
-        //this.el.textContent = "AA>" + this.my_template(this.model.attributes);
-        
-        //this.el.html(this.my_template(this.model.toJSON()));
-        //this.el.textContent = this.model.get('selected_element');
+        // TODO: There is for sure a way to do to loops in the template, fix this
+        this.el.innerHTML = '<div class="periodic-table-body">' +
+            '<div class="periodic-table-row">' +
+                this.cell_template({elementName: 'H', selectedElements: selectedElements})+
+                this.cell_template({elementName: 'He', selectedElements: selectedElements})+
+            '</div>' +
+            '<div class="periodic-table-row">' +
+                this.cell_template({elementName: 'Li', selectedElements: selectedElements})+
+                this.cell_template({elementName: 'Ne', selectedElements: selectedElements})+
+            '</div>' +
+            '</div>';
     }
 });
 
