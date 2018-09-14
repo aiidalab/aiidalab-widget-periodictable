@@ -1,7 +1,9 @@
 mc-widget-periodictable
-===============================
+========================
 
 A simple widget to select elements from the periodic table
+
+[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/materialscloud-org/mc-widget-periodictable/master?urlpath=apps/ptable-widget-demo.ipynb)
 
 Installation
 ------------
