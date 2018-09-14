@@ -6,6 +6,7 @@ https://blog.jupyter.org/authoring-custom-jupyter-widgets-2884a462e724
 
 
 # Things to do:
+- add binder to test it
 - validate if the selected_list contains unknown values
 - optional list of ['string', '[list of elements]'], if present show it, disable missing chemical elements, filter like on MC
 - allow, however, to have an option where the list is completely missing (and some option to disable some elements)
