@@ -1,12 +1,12 @@
 {
-  "name": "mc-widget-periodictable",
+  "name": "aiidalab-widget-periodictable",
   "version": "0.1.0",
   "description": "A simple widget to select elements from the periodic table",
   "author": "Materials Cloud Team",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/materialscloud-org/mc-widget-periodictable.git"
+    "url": "https://github.com/materialscloud-org/aiidalab-widget-periodictable.git"
   },
   "keywords": [
     "jupyter",

@@ -7,7 +7,7 @@ build/
 node_modules/
 
 # Compiled javascript
-mc_widget_periodictable/static/
+aiidalab_widget_periodictable/static/
 
 # OS X
 .DS_Store

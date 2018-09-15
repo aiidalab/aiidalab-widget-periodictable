@@ -7,5 +7,5 @@ Package Install
 - [node](http://nodejs.org/)
 
 ```bash
-npm install --save mc-widget-periodictable
+npm install --save aiidalab-widget-periodictable
 ```

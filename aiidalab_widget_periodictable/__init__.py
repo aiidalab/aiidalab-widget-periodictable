@@ -6,6 +6,6 @@ def _jupyter_nbextension_paths():
     return [{
         'section': 'notebook',
         'src': 'static',
-        'dest': 'mc-widget-periodictable',
-        'require': 'mc-widget-periodictable/extension'
+        'dest': 'aiidalab-widget-periodictable',
+        'require': 'aiidalab-widget-periodictable/extension'
     }]

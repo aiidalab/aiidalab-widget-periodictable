@@ -1,2 +1,2 @@
-recursive-include mc_widget_periodictable/static *.*
-include mc-widget-periodictable.json
+recursive-include aiidalab_widget_periodictable/static *.*
+include aiidalab-widget-periodictable.json

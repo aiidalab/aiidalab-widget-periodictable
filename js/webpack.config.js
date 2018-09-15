@@ -20,7 +20,7 @@ module.exports = [
         entry: './lib/extension.js',
         output: {
             filename: 'extension.js',
-            path: path.resolve(__dirname, '..', 'mc_widget_periodictable', 'static'),
+            path: path.resolve(__dirname, '..', 'aiidalab_widget_periodictable', 'static'),
             libraryTarget: 'amd'
         }
     },
@@ -33,7 +33,7 @@ module.exports = [
         entry: './lib/index.js',
         output: {
             filename: 'index.js',
-            path: path.resolve(__dirname, '..', 'mc_widget_periodictable', 'static'),
+            path: path.resolve(__dirname, '..', 'aiidalab_widget_periodictable', 'static'),
             libraryTarget: 'amd'
         },
         devtool: 'source-map',
@@ -42,7 +42,7 @@ module.exports = [
         },
         externals: ['@jupyter-widgets/base']
     },
-    {// Embeddable mc-widget-periodictable bundle
+    {// Embeddable aiidalab-widget-periodictable bundle
      //
      // This bundle is generally almost identical to the notebook bundle
      // containing the custom widget views and models.
@@ -61,7 +61,7 @@ module.exports = [
             filename: 'index.js',
             path: path.resolve(__dirname, 'dist'),
             libraryTarget: 'amd',
-            publicPath: 'https://unpkg.com/mc-widget-periodictable@' + version + '/dist/'
+            publicPath: 'https://unpkg.com/aiidalab-widget-periodictable@' + version + '/dist/'
         },
         devtool: 'source-map',
         module: {

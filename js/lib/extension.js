@@ -5,7 +5,7 @@
 // Some static assets may be required by the custom widget javascript. The base
 // url for the notebook is not known at build time and is therefore computed
 // dynamically.
-__webpack_public_path__ = document.querySelector('body').getAttribute('data-base-url') + 'nbextensions/mc-widget-periodictable';
+__webpack_public_path__ = document.querySelector('body').getAttribute('data-base-url') + 'nbextensions/aiidalab-widget-periodictable';
 
 
 // Configure requirejs
@@ -13,7 +13,7 @@ if (window.require) {
     window.require.config({
         map: {
             "*" : {
-                "mc-widget-periodictable": "nbextensions/mc-widget-periodictable/index",
+                "aiidalab-widget-periodictable": "nbextensions/aiidalab-widget-periodictable/index",
             }
         }
     });

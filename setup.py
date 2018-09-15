@@ -66,8 +66,8 @@ class NPM(Command):
     node_modules = os.path.join(node_root, 'node_modules')
 
     targets = [
-        os.path.join(here, 'mc_widget_periodictable', 'static', 'extension.js'),
-        os.path.join(here, 'mc_widget_periodictable', 'static', 'index.js')
+        os.path.join(here, 'aiidalab_widget_periodictable', 'static', 'extension.js'),
+        os.path.join(here, 'aiidalab_widget_periodictable', 'static', 'index.js')
     ]
 
     def initialize_options(self):
@@ -121,22 +121,22 @@ class NPM(Command):
         update_package_data(self.distribution)
 
 version_ns = {}
-with open(os.path.join(here, 'mc_widget_periodictable', '_version.py')) as f:
+with open(os.path.join(here, 'aiidalab_widget_periodictable', '_version.py')) as f:
     exec(f.read(), {}, version_ns)
 
 setup_args = {
-    'name': 'mc_widget_periodictable',
+    'name': 'aiidalab_widget_periodictable',
     'version': version_ns['__version__'],
     'description': 'A simple widget to select elements from the periodic table',
     'long_description': LONG_DESCRIPTION,
     'include_package_data': True,
     'data_files': [
-        ('share/jupyter/nbextensions/mc-widget-periodictable', [
-            'mc_widget_periodictable/static/extension.js',
-            'mc_widget_periodictable/static/index.js',
-            'mc_widget_periodictable/static/index.js.map',
+        ('share/jupyter/nbextensions/aiidalab-widget-periodictable', [
+            'aiidalab_widget_periodictable/static/extension.js',
+            'aiidalab_widget_periodictable/static/index.js',
+            'aiidalab_widget_periodictable/static/index.js.map',
         ],),
-        ('etc/jupyter/nbconfig/notebook.d/' ,['mc-widget-periodictable.json'])
+        ('etc/jupyter/nbconfig/notebook.d/' ,['aiidalab-widget-periodictable.json'])
     ],
     'install_requires': [
         'ipywidgets>=7.0.0',
@@ -152,7 +152,7 @@ setup_args = {
 
     'author': 'Materials Cloud Team',
     'author_email': 'developers@materialscloud.org',
-    'url': 'https://github.com/materialscloud-org/mc-widget-periodictable',
+    'url': 'https://github.com/materialscloud-org/aiidalab-widget-periodictable',
     'keywords': [
         'ipython',
         'jupyter',

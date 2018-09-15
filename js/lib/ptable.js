@@ -44,8 +44,8 @@ var MCPTableModel = widgets.DOMWidgetModel.extend({
     defaults: _.extend(widgets.DOMWidgetModel.prototype.defaults(), {
         _view_name : 'MCPTableView',
         _model_name : 'MCPTableModel',
-        _model_module : 'mc-widget-periodictable',
-        _view_module : 'mc-widget-periodictable',
+        _model_module : 'aiidalab-widget-periodictable',
+        _view_module : 'aiidalab-widget-periodictable',
         _model_module_version : '0.1.0',
         _view_module_version : '0.1.0',
     })
