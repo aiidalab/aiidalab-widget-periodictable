@@ -1,4 +1,4 @@
-A simple widget to select elements from the periodic table
+A jupyter widget to select chemical elements from the periodic table
 
 Package Install
 ---------------

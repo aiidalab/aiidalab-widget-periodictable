@@ -3,7 +3,7 @@ from traitlets import Unicode, Int, List
 
 @widgets.register
 class PTableWidget(widgets.DOMWidget):
-    """A widget to select chemical elements from a periodic table."""
+    """A jupyter widget to select chemical elements from the periodic table."""
     _view_name = Unicode('MCPTableView').tag(sync=True)
     _model_name = Unicode('MCPTableModel').tag(sync=True)
     _view_module = Unicode('aiidalab-widget-periodictable').tag(sync=True)

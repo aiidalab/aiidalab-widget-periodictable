@@ -1,14 +1,14 @@
 aiidalab-widget-periodictable
 =============================
 
-A simple widget to select elements from the periodic table
+A jupyter widget to select chemical elements from the periodic table
 
 [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/aiidalab/aiidalab-widget-periodictable/master?urlpath=apps/widget-demo.ipynb)
 
 Installation
 ------------
 
-**NOTE**: this package is not yet on pip.**
+**NOTE**: this package is not yet on pip.
 
 To install use pip:
 

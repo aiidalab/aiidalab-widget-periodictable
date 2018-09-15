@@ -22,7 +22,7 @@ log.set_verbosity(log.DEBUG)
 log.info('setup.py entered')
 log.info('$PATH=%s' % os.environ['PATH'])
 
-LONG_DESCRIPTION = 'A simple widget to select elements from the periodic table'
+LONG_DESCRIPTION = 'A jupyter widget to select chemical elements from the periodic table'
 
 def js_prerelease(command, strict=False):
     """decorator for building minified js/css prior to another command"""
@@ -127,7 +127,7 @@ with open(os.path.join(here, 'aiidalab_widget_periodictable', '_version.py')) as
 setup_args = {
     'name': 'aiidalab_widget_periodictable',
     'version': version_ns['__version__'],
-    'description': 'A simple widget to select elements from the periodic table',
+    'description': 'A jupyter widget to select chemical elements from the periodic table',
     'long_description': LONG_DESCRIPTION,
     'include_package_data': True,
     'data_files': [

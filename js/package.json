@@ -1,7 +1,7 @@
 {
   "name": "aiidalab-widget-periodictable",
   "version": "0.1.0",
-  "description": "A simple widget to select elements from the periodic table",
+  "description": "A jupyter widget to select chemical elements from the periodic table",
   "author": "Materials Cloud Team",
   "main": "lib/index.js",
   "repository": {
