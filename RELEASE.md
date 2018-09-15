@@ -18,3 +18,8 @@ git clean -fdx
 npm install
 npm publish
 ```
+
+- Additional material:
+
+[An interesting link on how to publish](https://github.com/ocoudray/first-widget#4---publish-on-pypi-and-npm)
+[A tutorial to author a custom jupyter widget](https://blog.jupyter.org/authoring-custom-jupyter-widgets-2884a462e724)
