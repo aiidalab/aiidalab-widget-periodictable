@@ -44,6 +44,7 @@ var MCPTableModel = widgets.DOMWidgetModel.extend({
         _view_module : 'aiidalab-widget-periodictable',
         _model_module_version : '0.1.0',
         _view_module_version : '0.1.0',
+        display_names_replacements: {},
     })
 });
 
@@ -56,16 +57,17 @@ var MCPTableView = widgets.DOMWidgetView.extend({
         '<% for (let elementRow of elementTable) { print("<div class=\'periodic-table-row\'>"); for (let elementName of elementRow) { if ( (elementName === "") || (elementName == "*" ) ) { %>' +
         '  <span class="periodic-table-empty noselect"><%= elementName %></span>' +
         '<% } else { %>' +
-        '  <span class="<% if (disabledElements.includes(elementName)) { print(" periodic-table-disabled"); } else { print(" periodic-table-entry"); }%> noselect element-<%= elementName %><% if (selectedElements.includes(elementName) && (! disabledElements.includes(elementName)) ) { print(" elementOn"); } %>"><%= elementName %></span>' +
+        '  <span class="<% if (disabledElements.includes(elementName)) { print(" periodic-table-disabled"); } else { print(" periodic-table-entry"); }%> noselect element-<%= elementName %><% if (selectedElements.includes(elementName) && (! disabledElements.includes(elementName)) ) { print(" elementOn"); } %>"><% print(displayNamesReplacements[elementName] || elementName); %></span>' +
         '<% } }; print("</div>"); } %>'
     ),
 
     render: function() {
         // I render the widget
-        this.selected_elements_changed();
+        this.rerenderScratch();
         // I bind on_change events
-        this.model.on('change:selected_elements', this.selected_elements_changed, this);
-        this.model.on('change:disabled_elements', this.disabled_elements_changed, this);
+        this.model.on('change:selected_elements', this.rerenderScratch, this);
+        this.model.on('change:disabled_elements', this.rerenderScratch, this);
+        this.model.on('change:display_names_replacements', this.rerenderScratch, this);
     },
 
     events: {
@@ -78,20 +80,18 @@ var MCPTableView = widgets.DOMWidgetView.extend({
         // and send back the information to the model
 
         // Understand the current state
-        var elementName = undefined;
-        var isOn = false;
-        var isDisabled = false;
-        for (let classElem of event.target.classList) {
-            if (classElem.startsWith('element-')) {
-                elementName = classElem.slice("element-".length);
-            }
-            if (classElem == "elementOn") {
-                isOn = true;
-            }
-            if (classElem == "periodic-table-disabled") {
-                isDisabled = true;
-            }
-        }
+        // I convert from a DOMTokenList to an Array - DOMTokenList
+        // is not a real Array, and methods like '.contains()' don't work as
+        // expected
+        classNames = _.map(event.target.classList);
+        var elementName = _.chain(classNames).
+            filter(function(className) { return className.startsWith('element-')}).
+            map(function(className) {return className.slice("element-".length);}).
+            //tap(function(data) {console.log("Detected click, element:", data)}). // for debugging
+            first(). // returns undefined if not found, as we want
+            value();
+        var isOn = _.includes(classNames, 'elementOn');
+        var isDisabled = _.includes(classNames, "periodic-table-disabled");
         // If this button is disabled, do not do anything
         // (Actually, this function should not be triggered if the button 
         // is disabled, this is just a safety measure)
@@ -106,10 +106,7 @@ var MCPTableView = widgets.DOMWidgetView.extend({
 
             if (isOn) {
                 // remove the element from the selected_elements
-                var index = newList.indexOf(elementName);
-                if (index > -1) {
-                    newList.splice(index, 1);
-                }
+                newList = _.without(newList, elementName);
                 // Swap CSS state
                 event.target.classList.remove('elementOn');
             } else {
@@ -125,12 +122,12 @@ var MCPTableView = widgets.DOMWidgetView.extend({
         }
     },
 
-    disabled_elements_changed: function() {
+    /*disabled_elements_changed: function() {
         // Re-render full widget if the list of disabled elements changed
-        this.selected_elements_changed();
-    },
+        this.rerenderScratch();
+    },*/
 
-    selected_elements_changed: function() {
+    rerenderScratch: function() {
         // Re-render full widget when the list of selected elements
         // changed from python
         var selectedElements = this.model.get('selected_elements');
@@ -142,27 +139,13 @@ var MCPTableView = widgets.DOMWidgetView.extend({
         // to remove disabledElements from the selectedElements list.
         // I use s variable to check if anything changed, so I send
         // back the data to python only if needed
-        var changed=false;
+
+        var selectedElementsLength = newSelectedElements.length;
         // Remove disabled elements from the selectedElements list
-        for (let elementName of disabledElements) {
-            if (newSelectedElements.includes(elementName)) {
-                var index = newSelectedElements.indexOf(elementName);
-                if (index > -1) {
-                    newSelectedElements.splice(index, 1);
-                    changed = true;
-                }
-            }
-        }
+        newSelectedElements = _.difference(newSelectedElements, disabledElements);
         // Remove unknown elements from the selectedElements list
-        for (let elementName of newSelectedElements) {
-            if (!elementList.includes(elementName)) {
-                var index = newSelectedElements.indexOf(elementName);
-                if (index > -1) {
-                    newSelectedElements.splice(index, 1);
-                    changed = true;
-                }
-            }
-        }
+        newSelectedElements = _.intersection(newSelectedElements, elementList);
+        var changed = newSelectedElements.length != selectedElementsLength;
 
         // call the update (to python) only if I actually removed/changed
         // something
@@ -176,6 +159,7 @@ var MCPTableView = widgets.DOMWidgetView.extend({
         this.el.innerHTML = '<div class="periodic-table-body">' +
             this.tableTemplate({
                 elementTable: elementTable, 
+                displayNamesReplacements: this.model.get('display_names_replacements'),
                 selectedElements: newSelectedElements,
                 disabledElements: disabledElements
             }) +

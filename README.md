@@ -20,11 +20,13 @@ For a development installation (requires npm),
 
     $ git clone https://github.com/materialscloud-org/aiidalab-widget-periodictable.git
     $ cd aiidalab-widget-periodictable
-    $ cd js
-    $ npm install
-    $ cd ..
     $ pip install -e .
     $ jupyter nbextension install --py --symlink --sys-prefix aiidalab_widget_periodictable
     $ jupyter nbextension enable --py --sys-prefix aiidalab_widget_periodictable
 
-It is not clear if the `npm install` part is needed. Also, you can also simply call the `reinstall.sh` script that calls all the above steps.
+Alternatively, you can also simply call the `reinstall.sh` script that calls the last three steps.
+
+After this, you need both to refresh the page, and restart the kernel.
+
+If you just changed the JS part, you can run a bit faster by running only
+the `./jsonlyreinstall.sh` script and then refreshing the page.

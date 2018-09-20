@@ -1,5 +1,5 @@
 import ipywidgets as widgets
-from traitlets import Unicode, Int, List
+from traitlets import Unicode, Int, List, Dict
 
 @widgets.register
 class PTableWidget(widgets.DOMWidget):
@@ -12,3 +12,4 @@ class PTableWidget(widgets.DOMWidget):
     _model_module_version = Unicode('^0.1.0').tag(sync=True)
     selected_elements = List([]).tag(sync=True)
     disabled_elements = List([]).tag(sync=True)
+    display_names_replacements = Dict({}).tag(sync=True)
