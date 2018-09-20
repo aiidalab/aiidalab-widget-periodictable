@@ -152,7 +152,7 @@ setup_args = {
 
     'author': 'Materials Cloud Team',
     'author_email': 'developers@materialscloud.org',
-    'url': 'https://github.com/materialscloud-org/aiidalab-widget-periodictable',
+    'url': 'https://github.com/aiidalab/aiidalab-widget-periodictable',
     'keywords': [
         'ipython',
         'jupyter',

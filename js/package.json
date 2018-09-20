@@ -6,7 +6,7 @@
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/materialscloud-org/aiidalab-widget-periodictable.git"
+    "url": "https://github.com/aiidalab/aiidalab-widget-periodictable.git"
   },
   "keywords": [
     "jupyter",

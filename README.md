@@ -18,7 +18,7 @@ To install use pip:
 
 For a development installation (requires npm),
 
-    $ git clone https://github.com/materialscloud-org/aiidalab-widget-periodictable.git
+    $ git clone https://github.com/aiidalab/aiidalab-widget-periodictable.git
     $ cd aiidalab-widget-periodictable
     $ pip install -e .
     $ jupyter nbextension install --py --symlink --sys-prefix aiidalab_widget_periodictable
