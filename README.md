@@ -1,6 +1,8 @@
 aiidalab-widget-periodictable
 =============================
 
+**NOTE!! THIS HAS BEEN SUPERSEDED BY [THE WIDGET-PERIODICTABLE](https://github.com/osscar-org/widget-periodictable) DEVELOPED BY THE OSSCAR PROJECT!!**
+
 A jupyter widget to select chemical elements from the periodic table
 
 [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/aiidalab/aiidalab-widget-periodictable/master?urlpath=apps/widget-demo.ipynb)
